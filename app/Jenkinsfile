@@ -1,0 +1,31 @@
+def CONTAINER_NAME="basket"
+def CONTAINER_TAG="latest"
+def DOCKER_HUB_USER="ankuratudemy"
+def HTTP_PORT="8080"
+
+node {
+
+    stage('Initialize'){
+        // def dockerHome = tool 'mydocker'
+        // def mavenHome  = tool 'myMaven'
+        // env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+    }
+stage('Clone repository') {
+
+
+        /* Let's make sure we have the repository cloned to our workspace */
+
+        checkout scm
+
+    }
+ stage("Glue-Static"){
+
+        sh '''echo "Starting Glue"
+              echo "Script executed from: ${PWD}"
+              eval $(docker-machine env default)
+              GUID="$RANDOM"
+              docker run --rm=true --name=glue_ci_code -v ${PWD}:/tmp/$GUID/ owasp/glue -z -t brakeman,sfl -d /tmp/$GUID/'''
+
+    }
+
+}
