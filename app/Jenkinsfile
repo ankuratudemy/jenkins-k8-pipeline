@@ -60,8 +60,8 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
 
 stage("Stop Conatiners"){
 
-    ${customImageContainer}.stop()
-    ${customTestImageContainer}.stop()
+    "${customImageContainer}".stop()
+    "${customTestImageContainer}".stop()
 }
 
 stage('Push image to Docker hub') {
