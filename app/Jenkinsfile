@@ -55,7 +55,7 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
         }
 
         customImageContainer = customImage.run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 -p 8090:8080')
-        customTestImageContainer = customTestImage.run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 -p 8090:8080')
+        customTestImageContainer = customTestImage.run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 ')
         }
 
     }
