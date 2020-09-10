@@ -21,10 +21,10 @@ stage('Clone repository') {
  stage("Glue-Static"){
 
         sh '''echo "Starting Glue"
-              echo "Script executed from: ${PWD}"
+              echo "Script executed from: ${PWD}/app"
               eval $(docker-machine env default)
               GUID="$RANDOM"
-              docker run --rm=true --name=glue_ci_code -v ${PWD}:/tmp/$GUID/ owasp/glue -z -t brakeman,sfl -d /tmp/$GUID/'''
+              docker run --rm=true --name=glue_ci_code -v ${PWD}/app:/tmp/$GUID/ owasp/glue -z -t brakeman,sfl -d /tmp/$GUID/'''
 
     }
  stage("Build Basket Image"){
@@ -37,15 +37,15 @@ stage('Clone repository') {
 
  stage("Build Basket Image"){
         
-        def dockerfile = 'Dockerfile.production'
+    
 
-        def customImage = docker.build("basket:${env.BUILD_ID}","-f ${dockerfile} ./app")
+        def customImage = docker.build("basket:${env.BUILD_ID}","./app")
 
     }
 stage("Build Basket Test Image"){
-    def dockerfile = 'Dockerfile.test'
 
-        def customTestImage = docker.build("basket-test:${env.BUILD_ID}","-f ${dockerfile} ./app")
+
+        def customTestImage = docker.build("basket-test:${env.BUILD_ID}","./test")
 
     }
 
