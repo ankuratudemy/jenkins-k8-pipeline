@@ -48,7 +48,6 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
 
     }
 
-}
 
 stage("Stop Conatiners"){
 
