@@ -1,5 +1,5 @@
 //During the test the env variable is set to test
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'dev';
 
 let mongoose = require("mongoose");
 let Product = require("../models/Product.model");
