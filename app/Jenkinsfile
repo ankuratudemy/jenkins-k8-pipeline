@@ -29,7 +29,7 @@ stage('Clone repository') {
     }
  stage("Build Basket Image"){
 
-        def customImage = docker.build("basket:${env.BUILD_ID}")
+        def customImage = docker.build("basket:${env.BUILD_ID}","./app")
 
     }
 
