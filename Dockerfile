@@ -15,7 +15,7 @@ COPY ./app .
 COPY ./test test
 
 RUN npm install --save-dev
-
+RUN npm install -g mocha chai chai-http chai-dom
 COPY ./app .
 COPY ./test test
 
