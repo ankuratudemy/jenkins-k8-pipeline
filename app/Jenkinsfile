@@ -48,7 +48,7 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
 
         docker.image('mongo:latest').inside("--link ${c.id}:mongodb") {
             /* Wait until mongodb service is up */
-            bash 'while ! echo 'db.runCommand("ping").ok' | mongo mongodb:27017/test --quiet; do sleep 1; done'
+            sh 'while [!true]; do sleep 1; done'
         }
 
         def customImageContainer = customImage.run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 -p 8090:8080')
