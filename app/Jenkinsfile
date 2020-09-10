@@ -34,3 +34,28 @@ stage('Clone repository') {
     }
 
 }
+
+ stage("Build Basket Image"){
+
+        def customImage = docker.build("basket:${env.BUILD_ID}"," -f Dockerfile.production ./app")
+
+    }
+stage("Build Basket Test Image"){
+
+        def customTestImage = docker.build("basket-test:${env.BUILD_ID}","-f Dockerfile.test ./app")
+
+    }
+
+stage("Run Tests with basket-test image and mongoDb conatiner"){
+docker.image('mongodb:latest').withRun('-p 27017:27017') { c ->
+        docker.image('mongodb:latest').inside("--link ${c.id}:mongodb") {
+            /* Wait until mongodb service is up */
+            sh 'while ! echo 'db.runCommand("ping").ok' | mongo mongodb:27017/test --quiet; do sleep 1; done'
+        }
+        docker.image('basket-test:${env.BUILD_ID}').inside("--link ${c.id}:mongodb") {
+           
+        }
+    }
+
+}
+}
