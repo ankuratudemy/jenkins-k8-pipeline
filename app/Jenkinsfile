@@ -38,7 +38,7 @@ stage('Clone repository') {
 stage("Build Basket Test Image"){
 
 
-        def customTestImage = docker.build("basket-test:${env.BUILD_ID}","./test")
+        def customTestImage = docker.build("basket-test:${env.BUILD_ID}")
 
     }
 stage('Push image to Docker hub') {
