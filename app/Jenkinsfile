@@ -44,7 +44,7 @@ stage("Build Basket Test Image"){
 
 
 stage("Run Tests with basket-test image and mongoDb conatiner"){
-docker.image('mongodb:latest').withRun('-p 27017:27017')
+docker.image('mongo:latest').withRun('-p 27017:27017')
  { c ->
         docker.image('mongo:latest').inside("--link ${c.id}:mongodb") {
             /* Wait until mongodb service is up */
