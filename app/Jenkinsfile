@@ -1,7 +1,7 @@
 def CONTAINER_NAME="basket"
 def CONTAINER_TAG="latest"
 def DOCKER_HUB_USER="ankuratudemy"
-def HTTP_PORT="8090"
+def HTTP_PORT="8080"
 def customImage =''
 def customTestImage = ''
 def customImageContainer =''
@@ -55,9 +55,9 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
         }
 
         customImageContainer = customImage.run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 -p 8090:8080')
-        // customTestImageContainer = customTestImage.inside('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 '){
-        //     sh 'npm test'
-        // }
+        customTestImageContainer = customTestImage.inside('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 '){
+            sh 'npm test'
+        }
         }
 
     }
