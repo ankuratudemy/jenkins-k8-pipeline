@@ -21,4 +21,4 @@ COPY ./test test
 
 EXPOSE 8080
 
-CMD ["npx", "test", "--reporter", "spec"]
+CMD ["npm", "test"]
