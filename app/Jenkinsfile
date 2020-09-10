@@ -34,28 +34,26 @@ stage('Clone repository') {
     }
 
 
-
-stage("Build Basket Test Image"){
-
-
-        def customTestImage = docker.build("basket-test:${env.BUILD_ID}")
-
-    }
-
-
 stage("Run Tests with basket-test image and mongoDb conatiner"){
-docker.image('mongo:latest').withRun('-p 27017:27017')
- { c ->
+docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
+
         docker.image('mongo:latest').inside("--link ${c.id}:mongodb") {
             /* Wait until mongodb service is up */
             sh 'while ! echo 'db.runCommand("ping").ok' | mongo mongodb:27017/test --quiet; do sleep 1; done'
         }
-        docker.image("basket-test:${env.BUILD_ID}").inside("--link ${c.id}:mongodb") { 
-            npm test
+
+        def customImageContainer = customImage.run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 -p 8090:8080')
+        def customTestImageContainer = customTestImage.run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 -p 8090:8080')
         }
 
     }
 
+}
+
+stage("Stop Conatiners"){
+
+    customImageContainer.stop()
+    customTestImageContainer.stop()
 }
 
 stage('Push image to Docker hub') {
