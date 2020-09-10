@@ -1,8 +1,11 @@
 def CONTAINER_NAME="basket"
 def CONTAINER_TAG="latest"
 def DOCKER_HUB_USER="ankuratudemy"
-def HTTP_PORT="8080"
-
+def HTTP_PORT="8090"
+def customImage =''
+def customTestImage = ''
+def customImageContainer =''
+def customTestImageContainer =''
 node {
 
     stage('Initialize'){
@@ -29,13 +32,13 @@ stage('Clone repository') {
     }
  stage("Build Basket Image"){
 
-        def customImage = docker.build("ankuratudemy/basket:${env.BUILD_ID}","./app")
+        customImage = docker.build("ankuratudemy/basket:${env.BUILD_ID}","./app")
 
     }
 
   stage("Build Basket Image"){
 
-        def customTestImage = docker.build("ankuratudemy/basket-test:${env.BUILD_ID}")
+         customTestImage = docker.build("ankuratudemy/basket-test:${env.BUILD_ID}")
 
     }
 
@@ -51,8 +54,8 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
             sh 'while ! true; do sleep 1; done'
         }
 
-        def customImageContainer = "${customImage}".run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 -p 8090:8080')
-        def customTestImageContainer = "${customTestImage}".run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 -p 8090:8080')
+        customImageContainer = "${customImage}".run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 -p 8090:8080')
+        customTestImageContainer = "${customTestImage}".run('-e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=8090 -p 8090:8080')
         }
 
     }
