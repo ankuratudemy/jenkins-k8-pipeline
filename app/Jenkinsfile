@@ -54,7 +54,7 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
             sh 'while ! true; do sleep 1; done'
                   
         }
-        
+        sh 'docker system prune -f'
         customImageContainer = customImage.run("--name=basket -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT} -p 9090:8080")
         customTestImageContainer = customTestImage.inside("--name=basket-test -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT}"){
             sh 'cd app && npx test'
