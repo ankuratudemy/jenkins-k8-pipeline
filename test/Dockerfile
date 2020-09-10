@@ -1,4 +1,4 @@
-FROM calculator
+FROM basket
 
 COPY test test
 ENV NODE_ENV dev
