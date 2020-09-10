@@ -36,13 +36,16 @@ stage('Clone repository') {
 
 
  stage("Build Basket Image"){
+        
+        def dockerfile = 'Dockerfile.production'
 
-        def customImage = docker.build("basket:${env.BUILD_ID}"," -f Dockerfile.production ./app")
+        def customImage = docker.build("basket:${env.BUILD_ID}","-f ${dockerfile} ./app")
 
     }
 stage("Build Basket Test Image"){
+    def dockerfile = 'Dockerfile.test'
 
-        def customTestImage = docker.build("basket-test:${env.BUILD_ID}","-f Dockerfile.test ./app")
+        def customTestImage = docker.build("basket-test:${env.BUILD_ID}","-f ${dockerfile} ./app")
 
     }
 
