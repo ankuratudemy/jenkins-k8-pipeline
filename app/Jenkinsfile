@@ -27,5 +27,10 @@ stage('Clone repository') {
               docker run --rm=true --name=glue_ci_code -v ${PWD}:/tmp/$GUID/ owasp/glue -z -t brakeman,sfl -d /tmp/$GUID/'''
 
     }
+ stage("Build Basket Image"){
+
+        def customImage = docker.build("basket:${env.BUILD_ID}")
+
+    }
 
 }
