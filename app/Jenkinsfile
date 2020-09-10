@@ -51,7 +51,9 @@ docker.image('mongo:latest').withRun('-p 27017:27017')
             sh 'while ! echo 'db.runCommand("ping").ok' | mongo mongodb:27017/test --quiet; do sleep 1; done'
         }
         docker.image("basket-test:${env.BUILD_ID}").inside("--link ${c.id}:mongodb") { 
+            npm test
         }
+
     }
 
 }
