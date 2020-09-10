@@ -12,7 +12,7 @@ ENV NODE_ENV dev
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 COPY ./app .
-COPY ./test test
+COPY ./test /test
 
 RUN npm install --save-dev
 RUN npm install -g mocha chai chai-http chai-dom
