@@ -4,7 +4,7 @@
   "description": "RackSpace interview code",
   "main": "server.js",
   "scripts": {
-    "test": "npx test --timeout 10000",
+    "test": "npx test",
     "start": "node server.js"
   },
   "devDependencies": {
