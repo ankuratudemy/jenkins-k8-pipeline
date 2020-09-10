@@ -7,17 +7,18 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 # Create app directory
 WORKDIR /usr/src/app
-
+ENV NODE_ENV dev
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
+COPY ./app .
+COPY ./test test
 
-ENV NODE_ENV dev
-RUN npm install
+RUN npm install --save-dev
 
 COPY ./app .
 COPY ./test test
 
 EXPOSE 8080
 
-CMD ["npm", "test", "--reporter", "spec"]
+CMD ["npx", "test", "--reporter", "spec"]
