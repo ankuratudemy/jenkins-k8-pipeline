@@ -62,7 +62,7 @@ docker.image('mongo:latest').withRun('--name mongodb -p 27017:27017'){ c ->
         customImageContainer = customImage.run("--name=basket -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT} -p 9090:8080")
         sh "docker network connect ${env.BUILD_ID}-network basket"
         customTestImageContainer = customTestImage.inside("--network=${env.BUILD_ID}-network --name=basket-test -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT}"){
-            sh 'cd app && npm test'
+            sh 'cd /usr/src/app && npm test'
         }
 }
 
