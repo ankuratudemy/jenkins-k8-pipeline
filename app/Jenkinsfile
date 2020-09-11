@@ -47,19 +47,22 @@ stage('Clone repository') {
 
 
 stage("Run Tests with basket-test image and mongoDb conatiner"){
-docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
-
+    sh "docker network create ${env.BUILD_ID}-network"
+docker.image('mongo:latest').withRun('--name mongodb -p 27017:27017'){ c ->
+        
         docker.image('mongo:latest').inside("--link ${c.id}:mongodb") {
             /* Wait until mongodb service is up */
             sh 'while ! true; do sleep 1; done'
                   
         }
+        sh "docker network connect ${env.BUILD_ID}-network mongodb"
         sh 'docker stop basket|| true && docker stop basket-test|| true'
         sh 'docker system prune -f'
         
         customImageContainer = customImage.run("--name=basket -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT} -p 9090:8080")
-        customTestImageContainer = customTestImage.inside("--name=basket-test -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT}"){
-            sh 'mocha'
+        sh "docker network connect ${env.BUILD_ID}-network basket"
+        customTestImageContainer = customTestImage.inside("--network=${env.BUILD_ID}-network --name=basket-test -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT}"){
+            sh 'npx test'
         }
 }
 
@@ -68,8 +71,8 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
 
 stage("Stop Conatiners"){
 
-    "${customImageContainer}".stop()
-    "${customTestImageContainer}".stop()
+    customImageContainer.stop()
+    customTestImageContainer.stop()
 }
 
 stage('Push image to Docker hub') {
