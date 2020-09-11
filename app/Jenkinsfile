@@ -72,7 +72,7 @@ docker.image('mongo:latest').withRun('--name mongodb -p 27017:27017'){ c ->
 stage("Stop Conatiners"){
 
     customImageContainer.stop() || true
-    customTestImageContainer.stop() || true
+    //customTestImageContainer.stop() || true
     sh "docker network rm ${env.BUILD_ID}-network"
 }
 
