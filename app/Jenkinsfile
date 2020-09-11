@@ -55,7 +55,7 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
                   
         }
         sh 'docker stop basket|| true && docker stop basket-test|| true'
-        sh 'docker system prune -f'
+        //sh 'docker system prune -f'
 
 
         
