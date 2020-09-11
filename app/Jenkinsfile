@@ -30,23 +30,23 @@ stage('Clone repository') {
               docker run --rm=true --name=glue_ci_code -v ${PWD}/app:/tmp/$GUID/ owasp/glue -z -t brakeman,sfl -d /tmp/$GUID/'''
 
     }
- stage("Build Basket Image"){
+ stage("Build ${CONTAINER_NAME} Image"){
 
-        customImage = docker.build("ankuratudemy/basket:${env.BUILD_ID}","./app")
-
-    }
-
-  stage("Build Basket Image"){
-
-         customTestImage = docker.build("ankuratudemy/basket-test:${env.BUILD_ID}")
+        customImage = docker.build("${DOCKER_HUB_USER}/${CONTAINER_NAME}:${env.BUILD_ID}","./app")
 
     }
 
+  stage("Build ${CONTAINER_NAME}-test Image"){
+
+         customTestImage = docker.build("${DOCKER_HUB_USER}/${CONTAINER_NAME}-test:${env.BUILD_ID}")
+
+    }
 
 
 
 
-stage("Run Tests with basket-test image and mongoDb conatiner"){
+
+stage("Run Tests with ${CONTAINER_NAME} , ${CONTAINER_NAME}-test and mongoDb conatiner"){
     sh "docker network create ${env.BUILD_ID}-network"
 docker.image('mongo:latest').withRun('--name mongodb -p 27017:27017'){ c ->
         

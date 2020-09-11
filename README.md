@@ -1,4 +1,26 @@
-## Basket-with-offers
+## JENKINS-K8-Pipeline
+
+### About repo
+
+	This repo is to demonstrate complete DevSecOps CI/CD  Jenkins pipeline (scripted)
+### What does it do?
+	1. User codes a NodeJS api for a shopping basket and with offers coupon
+
+	2. Code contains app/Dockerfile, Dockerfile ( for testing code using Mocha-Chai), test/test.js mocha-chai functional test file(to be updated as we add/update features to api.), and a Jenkinsfile.
+
+	3. Check-in code to repo.
+
+	4. Jenkins Pipeline runs multiple stages as follows:
+	   - Checkout SCM repo
+	   - Owasp/Glue repo scan 
+	   - Builds Basket Image using app/Dockerfile
+	   - Builds Basket Test Image using Dockerfile ( in root folder)
+	   - Run Mocha-Chai Tests fresh mongoDb conatiner, basket Conatiner , and basket-test container running in     	same network (named as build id)
+	   - Stop containers & removed temp. network
+	   - Pushed basket image with 'latest' and 'env.BUILD_ID" tags to docker hub
+
+
+## Basket-with-offers (The app)
 	This project is to create a shopping basket with products listed below along with the product code, Name , and Price.
 
 	+--------------|--------------|---------+
