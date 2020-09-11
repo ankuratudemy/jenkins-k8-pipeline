@@ -47,6 +47,8 @@ stage('Clone repository') {
 
 
 stage("Run Tests with basket-test image and mongoDb conatiner"){
+
+    sh 'docker stop basket|| true && docker stop basket-test|| true'
 docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
 
         docker.image('mongo:latest').inside("--link ${c.id}:mongodb") {
@@ -54,7 +56,7 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
             sh 'while ! true; do sleep 1; done'
                   
         }
-        sh 'docker stop basket|| true && docker stop basket-test|| true'
+        
         //sh 'docker system prune -f'
 
 
@@ -66,19 +68,19 @@ docker.image('mongo:latest').withRun('-p 27017:27017'){ c ->
 }
 
 
-   customImage.withRun('--name=basket -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT} -p 9090:8080'){ c ->
+//    customImage.withRun('--name=basket -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT} -p 9090:8080'){ c ->
 
-        customImage.inside("--link ${c.id}:mongodb") {
-            /* Wait until mongodb service is up */
-            sh 'while ! true; do sleep 1; done'
+//         customImage.inside("--link ${c.id}:mongodb") {
+//             /* Wait until mongodb service is up */
+//             sh 'while ! true; do sleep 1; done'
                   
-        }
+//         }
 
-         customTestImageContainer = customTestImage.inside("--name=basket-test -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT}"){
-            sh 'mocha'
-         }
+//          customTestImageContainer = customTestImage.inside("--name=basket-test -e MONGO_HOST=mongodb -e MONGO_PORT=27017 -e DATABASE=rackspace-basket -e PORT=${HTTP_PORT}"){
+//             sh 'mocha'
+//          }
        
-}
+// }
 
 
     }
