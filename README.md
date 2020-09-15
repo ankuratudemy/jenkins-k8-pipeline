@@ -25,6 +25,71 @@
 	3. Deploy in k8 cluster on user approval 
 
 
+## Docker service Installed  ( if on windows use powershell to run commands to avoid bugs )	
+
+## Run jenkins with "DinD" 
+
+	docker pull jenkins/jenkins
+	docker images
+	docker pull jenkinsci/blueocean
+	docker network create jenkins
+	docker volume create jenkins-docker-certs
+	docker volume create jenkins-data
+	Run jenkins with docker DinD  (Check dind vs dood jenkins in docker diff)
+
+	docker container run --name jenkins-docker --rm --detach   --privileged --network jenkins --network-alias docker   --env DOCKER_TLS_CERTDIR='/certs'   --volume jenkins-docker-certs:/certs/client --publish 2376:2376  --volume jenkins-data:/var/jenkins_home   docker:dind
+
+	docker container run   --name jenkins-blueocean   --rm   --detach   --network jenkins   --env DOCKER_HOST=tcp://docker:2376   --env DOCKER_CERT_PATH=/certs/client   --env DOCKER_TLS_VERIFY=1   --publish 8080:8080   --publish 50000:50000   --volume jenkins-data:/var/jenkins_home   --volume jenkins-docker-certs:/certs/client:ro   jenkinsci/blueocean
+
+
+	Install plugins  for 
+
+	docker 	
+	git
+	cloudbees docker
+	hubot pipeline plugin
+
+## Go to global tools config in jenkins .. and in git section add git path 
+
+	Run this command to get git path inside jenkins container :
+
+	docker exec  jenkins-blueocean which git
+
+	output: /usr/bin/git
+
+## ChatOps - Jenkins-hubot-slack
+
+	Clone repo : git@github.com:ankuratudemy/hubot-base.git
+	
+	
+	This repo is built using https://github.com/jenkinsci/hubot-steps-plugin  
+	Refer to this repo on how to use hubotsend and hubotapproval messages during pipeline run.
+	
+	
+	Inside Run-Docker.sh config
+	---
+		export PORT=9999
+		export EXPRESS_PORT=9999
+		export HUBOT_SLACK_TOKEN=<clasic slack bot token>
+		export HUBOT_ADAPTER=slack
+		export HUBOT_JENKINS_URL=http://Jenkinshost:port
+		export HUBOT_JENKINS_AUTH=chatops:nhy6^YHNnhy6^YHN
+
+		docker run \
+		  -e "HUBOT_SLACK_TOKEN=$HUBOT_SLACK_TOKEN" \
+		  -e "HUBOT_ADAPTER=$HUBOT_ADAPTER" \
+		  -e "HUBOT_JENKINS_URL=$HUBOT_JENKINS_URL" \
+		  -e "HUBOT_JENKINS_AUTH=$HUBOT_JENKINS_AUTH" \
+		  -p 9999:8080 \
+		  --network jenkins \
+		  -td --name hubot \
+		  thoughtslive/hubot-base
+	---
+	
+## We are going to run all three  docker containers Jenkins-Docker , Jenkins-Blueocean, and hubot in "--network jenkins" 
+	
+	I realised running Jenkins in DooD mode lessens networking issues by great length :( . but never mind. That will be another repo !! :)
+
 
 
 
