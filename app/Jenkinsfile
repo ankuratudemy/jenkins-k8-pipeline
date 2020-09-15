@@ -19,7 +19,7 @@ node {
     }
 stage('Clone repository') {
 
-hubotSend message: "*Release Started*. \n Releasing Basket Project. :sunny: \n<!here> <!channel> <@nrayapati> ", tokens: "BUILD_NUMBER,BUILD_ID", status: 'STARTED'
+ hubotSend message: "Cloning Repo for  $BUILD_URL"
         /* Let's make sure we have the repository cloned to our workspace */
 
         checkout scm
