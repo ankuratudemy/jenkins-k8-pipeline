@@ -10,9 +10,9 @@ node {
 
 
     stage('Initialize'){
-        withEnv(['HUBOT_URL=http://hubot:8080/','HUBOT_DEFAULT_ROOM=jenkins','HUBOT_FAIL_ON_ERROR=false']) {
+        withEnv(['HUBOT_URL=http://8e7fece558e0.ngrok.io','HUBOT_DEFAULT_ROOM=jenkins','HUBOT_FAIL_ON_ERROR=false']) {
   hubotSend message: "building job $BUILD_URL"
-  //hubotApprove message: "Proceed with building this job?"
+  hubotApprove message: "Proceed with building this job?"
 }
         // def dockerHome = tool 'mydocker'
         // def mavenHome  = tool 'myMaven'
