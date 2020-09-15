@@ -22,7 +22,11 @@
 ### To Do...
 	1. Slack Channel integration
 	2. Email Integration
-	3. deploy in k8 cluster on user approval 
+	3. Deploy in k8 cluster on user approval 
+
+
+
+
 
 ## Basket-with-offers (The app)
 	This project is to create a shopping basket with products listed below along with the product code, Name , and Price.

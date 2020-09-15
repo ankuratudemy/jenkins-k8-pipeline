@@ -8,7 +8,12 @@ def customImageContainer =''
 def customTestImageContainer =''
 node {
 
+
     stage('Initialize'){
+        withEnv(['HUBOT_URL=http://hubot:8080','HUBOT_DEFAULT_ROOM=jenkins','HUBOT_FAIL_ON_ERROR=false']) {
+  hubotSend message: "building job $BUILD_URL"
+  hubotApprove message: "Proceed with building this job?"
+}
         // def dockerHome = tool 'mydocker'
         // def mavenHome  = tool 'myMaven'
         // env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
