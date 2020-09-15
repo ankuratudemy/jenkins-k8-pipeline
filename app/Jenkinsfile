@@ -10,17 +10,16 @@ node {
 
 
     stage('Initialize'){
-        withEnv(['HUBOT_URL=http://hubot:8080/','HUBOT_DEFAULT_ROOM=jenkins','HUBOT_FAIL_ON_ERROR=false']) {
   hubotSend message: "building job $BUILD_URL"
-  hubotApprove message: "Proceed with building this job?"
-}
+  //hubotApprove message: "Proceed with building this job?"
+
         // def dockerHome = tool 'mydocker'
         // def mavenHome  = tool 'myMaven'
         // env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
     }
 stage('Clone repository') {
 
-
+hubotSend message: "*Release Started*. \n Releasing Basket Project. :sunny: \n<!here> <!channel> <@nrayapati> ", tokens: "BUILD_NUMBER,BUILD_ID", status: 'STARTED'
         /* Let's make sure we have the repository cloned to our workspace */
 
         checkout scm
